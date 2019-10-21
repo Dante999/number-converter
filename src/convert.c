@@ -1,181 +1,196 @@
 #include "convert.h"
-
+#include <stdbool.h>
 #include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> // sscanf()
 #include "ascii_table.h"
 
 
-#define MAX_LENGTH      10
-
-#define PREFIX_LENGTH   2
+#define MAX_LENGTH 10
+#define PREFIX_LENGTH 2
 #define PREFIX_HEX      "0x"
 #define PREFIX_BINARY   "0b"
 #define PREFIX_DECIMAL  "0d"
 
-static bool prefix_matches(const char *actual, const char *expected);
-static char read_bit(char byte, uint8_t bit_number);
-
-static void convert_print(char number);
-
-static uint8_t read_from_input(const char *prefix, const char *value);
-static uint8_t read_from_decimal(const char *input);
-static uint8_t read_from_hex(const char *input);
-static uint8_t read_from_binary(const char *input);
-
-static void write_as_decimal(char *storage, uint8_t value);
-static void write_as_hex(char *storage, uint8_t value);
-static void write_as_ascii(char *storage, uint8_t value);
-static void write_as_binary(char *storage, uint8_t value);
 
 
-void convert(const char *input) {
-
-    char prefix[3];
-    char value[MAX_LENGTH];
-    uint8_t number = 255;
-
-    strncpy(prefix, input, PREFIX_LENGTH);
-    strncpy(value, input+PREFIX_LENGTH, sizeof(input-PREFIX_LENGTH));
-
-    number = read_from_input(prefix, value);
-    convert_print(number);
-}
+struct data {
+	uint8_t value;             // the value as a integer
+	char ascii[MAX_LENGTH];    // ascii representation (e.g. "A")
+	char dec[MAX_LENGTH];      // decimal representation (e.g. "0d65")
+	char binary[MAX_LENGTH];   // binary representation (e.g. "0b1100 0011")
+	char hex[MAX_LENGTH];      // hex representation (e.g. "0x0F")
+};
 
 
-static bool prefix_matches(const char *actual, const char *expected) {
-    if( strncmp(actual, expected, PREFIX_LENGTH) == 0 ) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+/*******************************************************************************
+ * checks if the given string starts with the expected prefix
+ *
+ * @param *s        the complete string
+ * @param *prefix   the expected prefix
+ *
+ * @return true if the prefix matches, otherwise false
+ *
+ ******************************************************************************/
+static bool prefix_matches(const char *s, const char *prefix) {
 
-
-static uint8_t read_from_input(const char *prefix, const char *value) {
-
-    uint8_t result = 0;
-
-    if( prefix_matches(prefix, PREFIX_DECIMAL) ) {
-        result = read_from_decimal(value);
-    }
-    else if( prefix_matches(prefix, PREFIX_HEX) ) {
-        result = read_from_hex(value);
-    }
-    else if( prefix_matches(prefix, PREFIX_BINARY) ) {
-        result = read_from_binary(value);
-    }
-
-    return result;
-}
-
-
-static void convert_print(char number) {
-    char ascii[MAX_LENGTH];
-    char dez[MAX_LENGTH];
-    char hex[MAX_LENGTH];
-    char bin[MAX_LENGTH];
-
-    write_as_ascii(ascii, number);
-    write_as_decimal(dez, number);
-    write_as_hex(hex, number);
-    write_as_binary(bin, number);
-
-    printf("--------------------------------------------\n");
-    printf("%-10s %-10s %-10s %-10s\n", "ASCII", "DEC", "HEX", "BIN");
-    printf("%-10s %-10s %-10s %-10s\n", ascii, dez, hex, bin);
-    printf("--------------------------------------------\n\n");
-}
-
-
-
-static uint8_t read_from_decimal(const char *input) {
-    int i;
-
-    sscanf(input, "%d", &i);
-
-    if( i > 255) {
-        printf("NUMER %s TOO LARGE!!", input);
-        return 0;
-    }
-    else {
-        return (char) i;
-    }
+	if( strncmp(s, prefix, PREFIX_LENGTH) == 0 )
+		return true;
+	else
+		return false;
 
 }
 
-static uint8_t read_from_hex(const char *input) {
-    int i;
 
-    sscanf(input, "%X", &i);
+/*******************************************************************************
+ * saves the decimal representation of a number to the given struct
+ *
+ * @param *s   the string with the decimal representation of a number
+ * @param *d   pointer to the structure for saving the value
+ *
+ * @return  0   if success
+ *         -1   if the value is out of range
+ *
+ ******************************************************************************/
+static int8_t interpret_decimal(const char *s, struct data *d) {
 
-    if( i > 255) {
-        printf("NUMER %s TOO LARGE!!", input);
-        return 0;
-    }
-    else {
-        return (char) i;
-    }
-}
+	int i;
 
-static uint8_t read_from_binary(const char *input) {
+	sscanf(s, "%d", &i);
 
-    uint8_t result = 0;
-
-    for( uint8_t i=0; i < 8; i++) {
-
-        if( strncmp(input+i, "1", 1) == 0) {
-            printf("bit %d is 1 \n", i);
-            result |= ( 1<<(7-i) );
-        }
-        else if( strncmp(input+i, "0", 1) == 0) {
-            printf("bit %d is 0 \n", i);
-        }
-        else {
-            printf("bit %d is unkown \n", i);
-        }
-
-    }
-
-    return result;
-}
-
-static void write_as_decimal(char *storage, uint8_t value) {
-    sprintf(storage, "0d%d", value);
-}
-
-static void write_as_hex(char *storage, uint8_t value) {
-    sprintf(storage, "0x%X", value);
-}
-
-static void write_as_ascii(char *storage, uint8_t value) {
-
-   if( 0 < value && value < 128) {
-        sprintf(storage, "%s", ascii_table[(int)value]);
-   }
-   else {
-        sprintf(storage, "%s", "undefined");
-   }
+	if( i < 0 || 255 < i ) {
+		d->value = 0;
+		printf("Error: Decimal number negative or greater than 255: %s", s);
+		return -1;
+	}
+	else {
+		d->value = (uint8_t) i;
+		return 0;
+	}
 
 }
 
-static void write_as_binary(char *storage, uint8_t value) {
-    sprintf(storage, "%c%c%c%c %c%c%c%c", read_bit(value, 7),
-            read_bit(value, 6), read_bit(value, 5),
-            read_bit(value, 4), read_bit(value, 3),
-            read_bit(value, 2), read_bit(value, 1),
-            read_bit(value, 0));
+
+/*******************************************************************************
+ * saves the hex representation of a number to the given struct
+ *
+ * @param *s   the string with the hex representation of a number
+ * @param *d   pointer to the structure for saving the value
+ *
+ * @return  0   if success
+ *         -1   if the value is out of range
+ *
+ ******************************************************************************/
+static int8_t interpret_hex(const char *s, struct data *d) {
+
+	int i;
+
+	sscanf(s, "%X", &i);
+
+	if( i < 0 || 255 < i ) {
+		d->value = 0;
+		printf("Error: Hex number negative or greater than 255: %s", s);
+		return -1;
+	}
+	else {
+		d->value = (uint8_t) i;
+		return 0;
+	}
+
 }
 
-static char read_bit(char byte, uint8_t bit_number ) {
 
-    if( byte & (1<<bit_number) ) {
-        return '1';
-    }
-    else {
-        return '0';
-    }
+/*******************************************************************************
+ * prints the content of the struct to the terminal
+ *
+ * @param   *d   pointer to the data structure
+ *
+ * @return  none
+ *
+ ******************************************************************************/
+static void print_result(struct data *d) {
+
+	char *ascii = d->ascii;
+	char *dec = d->dec;
+	char *hex = d->hex;
+	char *bin = d->binary;
+
+	printf("--------------------------------------------\n");
+	printf("%-10s %-10s %-10s %-10s\n", "ASCII", "DEC", "HEX", "BIN");
+	printf("%-10s %-10s %-10s %-10s\n", ascii, dec, hex, bin);
+	printf("--------------------------------------------\n\n");
+
 }
+
+
+/*******************************************************************************
+ * checks if the bit is set
+ *
+ * @param   byte   a byte
+ * @param   bit    the bit number to check
+ *
+ * @return  '1' if the bit in the byte was set, otherwise 
+ *          '0' if the bit was not set
+ *
+ ******************************************************************************/
+static char get_bit(char byte, uint8_t bit) {
+	return (byte & (1<<bit) ? '1' : '0');
+}
+
+
+/*******************************************************************************
+ * formats the value to the different number representations
+ *
+ * @param   *d   pointer to the data structure
+ *
+ * @return  none
+ *
+ ******************************************************************************/
+static void format_result(struct data *d) {
+
+	uint8_t value = d->value;
+
+	sprintf(d->dec, "0d%d", value); // decimal
+	sprintf(d->hex, "0x%X", value); // hex
+	sprintf(d->binary, "%c%c%c%c %c%c%c%c", 
+			get_bit(value, 7), get_bit(value, 6),
+			get_bit(value, 5), get_bit(value, 4),
+			get_bit(value, 3), get_bit(value, 2),
+			get_bit(value, 1), get_bit(value, 0)
+	       );
+	
+	sprintf(d->ascii, "%s", ascii_table[value]);
+	
+}
+
+
+void convert(const char *s) {
+
+	struct data d;
+
+	int8_t result = -1;
+
+	const char *v = s+PREFIX_LENGTH; // skip the prefix
+
+	if( prefix_matches(s, PREFIX_DECIMAL) )
+		result = interpret_decimal(v, &d);
+	else if( prefix_matches(s, PREFIX_HEX) )
+		result = interpret_hex(v, &d);
+	else
+		printf("No expected prefix found!");
+
+
+	if(result == 0) {
+		format_result(&d);
+		print_result(&d);
+	}
+	else {
+		printf("Something went wrong!");
+	}
+}
+
+
+
+
+
 
 
