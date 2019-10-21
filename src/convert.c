@@ -12,7 +12,10 @@
 #define PREFIX_DECIMAL  "0d"
 
 
-
+/**
+ * this structure is only used in this module to hold relevant information
+ * between the method calls
+ */
 struct data {
 	uint8_t value;             // the value as a integer
 	char ascii[MAX_LENGTH];    // ascii representation (e.g. "A")
@@ -29,7 +32,6 @@ struct data {
  * @param *prefix   the expected prefix
  *
  * @return true if the prefix matches, otherwise false
- *
  ******************************************************************************/
 static bool prefix_matches(const char *s, const char *prefix) {
 
@@ -49,7 +51,6 @@ static bool prefix_matches(const char *s, const char *prefix) {
  *
  * @return  0   if success
  *         -1   if the value is out of range
- *
  ******************************************************************************/
 static int8_t interpret_decimal(const char *s, struct data *d) {
 
@@ -78,7 +79,6 @@ static int8_t interpret_decimal(const char *s, struct data *d) {
  *
  * @return  0   if success
  *         -1   if the value is out of range
- *
  ******************************************************************************/
 static int8_t interpret_hex(const char *s, struct data *d) {
 
@@ -105,7 +105,6 @@ static int8_t interpret_hex(const char *s, struct data *d) {
  * @param   *d   pointer to the data structure
  *
  * @return  none
- *
  ******************************************************************************/
 static void print_result(struct data *d) {
 
@@ -130,7 +129,6 @@ static void print_result(struct data *d) {
  *
  * @return  '1' if the bit in the byte was set, otherwise 
  *          '0' if the bit was not set
- *
  ******************************************************************************/
 static char get_bit(char byte, uint8_t bit) {
 	return (byte & (1<<bit) ? '1' : '0');
@@ -143,7 +141,6 @@ static char get_bit(char byte, uint8_t bit) {
  * @param   *d   pointer to the data structure
  *
  * @return  none
- *
  ******************************************************************************/
 static void format_result(struct data *d) {
 
@@ -158,11 +155,19 @@ static void format_result(struct data *d) {
 			get_bit(value, 1), get_bit(value, 0)
 	       );
 	
-	sprintf(d->ascii, "%s", ascii_table[value]);
+	sprintf(d->ascii, "%s", value < 128 ? ascii_table[value] : "undefined");
 	
 }
 
 
+/*******************************************************************************
+ * converts the given string into the different number representations and 
+ * prints them on the command line
+ *
+ * @param   *s   the string for converting
+ *
+ * @return  none
+ ******************************************************************************/
 void convert(const char *s) {
 
 	struct data d;
@@ -186,6 +191,7 @@ void convert(const char *s) {
 	else {
 		printf("Something went wrong!");
 	}
+
 }
 
 
