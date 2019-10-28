@@ -88,7 +88,7 @@ static int8_t interpret_hex(const char *s, struct data *d) {
 
 	if( i < 0 || 255 < i ) {
 		d->value = 0;
-		printf("Error: Hex number negative or greater than 255: %s", s);
+		printf("Error: Hex number negative or greater than 255: %s\n", s);
 		return -1;
 	}
 	else {
@@ -96,6 +96,43 @@ static int8_t interpret_hex(const char *s, struct data *d) {
 		return 0;
 	}
 
+}
+
+
+/*******************************************************************************
+ * saves the binary representation of a number to the given struct
+ *
+ * @param *s   the string with the binary representation of a number
+ * @param *d   pointer to the structure for saving the value
+ *
+ * @return  0   if success
+ *         -1   if the value is out of range
+ ******************************************************************************/
+static int8_t interpret_binary(const char *s, struct data *d) {
+
+	uint8_t value = 0;
+
+
+	uint8_t actual_length   = strlen(s);
+	uint8_t expected_length = 8;
+
+	if( actual_length != expected_length ) {
+		printf("Error: Binary format has length %i instead of %i!\n", 
+				actual_length, expected_length);
+		return -1;
+	}
+
+	for( uint8_t i=0; i < expected_length; i++ ) {
+		
+		if( s[i] == '1' )
+			value |= (1<< (7-i));
+
+	}
+
+	d->value = value;
+
+
+	return 0;
 }
 
 
@@ -180,8 +217,10 @@ void convert(const char *s) {
 		result = interpret_decimal(v, &d);
 	else if( prefix_matches(s, PREFIX_HEX) )
 		result = interpret_hex(v, &d);
+	else if( prefix_matches(s, PREFIX_BINARY) ) 
+		result = interpret_binary(v, &d);
 	else
-		printf("No expected prefix found!");
+		printf("No expected prefix found!\n");
 
 
 	if(result == 0) {
@@ -189,7 +228,7 @@ void convert(const char *s) {
 		print_result(&d);
 	}
 	else {
-		printf("Something went wrong!");
+		printf("Something went wrong!\n");
 	}
 
 }
