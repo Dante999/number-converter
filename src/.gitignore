@@ -1,3 +1,6 @@
+# vim swapfile
+*.swp
+
 # compiled files
 *.o
 pc-number-converter
