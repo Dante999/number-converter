@@ -184,7 +184,7 @@ static void format_result(struct data *d) {
 	uint8_t value = d->value;
 
 	sprintf(d->dec, "0d%d", value); // decimal
-	sprintf(d->hex, "0x%X", value); // hex
+	sprintf(d->hex, "0x%02X", value); // hex
 	sprintf(d->binary, "%c%c%c%c %c%c%c%c", 
 			get_bit(value, 7), get_bit(value, 6),
 			get_bit(value, 5), get_bit(value, 4),
