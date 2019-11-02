@@ -2,14 +2,14 @@
 BasedOnStyle: LLVM
 
 IndentWidth: 8
-UseTab: Always
+UseTab: ForIndentation
 
-#BreakBeforeBraces: Linux
-BreakBeforeBraces: Custom
-BraceWrapping:
-  AfterEnum: false
-  AfterStruct: false
-  SplitEmptyFunction: false
+BreakBeforeBraces: Linux
+#BreakBeforeBraces: Custom
+#BraceWrapping:
+#  AfterEnum: false
+#  AfterStruct: false
+#  SplitEmptyFunction: false
 
 AllowShortIfStatementsOnASingleLine: false
 IndentCaseLabels: false
@@ -17,3 +17,6 @@ IndentCaseLabels: false
 
 # custom
 AlignConsecutiveAssignments: true
+#AlignConsecutiveMacros: true
+
+

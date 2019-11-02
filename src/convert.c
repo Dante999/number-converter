@@ -15,7 +15,7 @@
  * between the method calls
  */
 struct data {
-	uint8_t value;		 // the value as a integer
+	uint8_t value;           // the value as a integer
 	char ascii[MAX_LENGTH];  // ascii representation (e.g. "A")
 	char dec[MAX_LENGTH];    // decimal representation (e.g. "0d65")
 	char binary[MAX_LENGTH]; // binary representation (e.g. "0b1100 0011")
@@ -30,7 +30,8 @@ struct data {
  *
  * @return true if the prefix matches, otherwise false
  ******************************************************************************/
-static bool prefix_matches(const char *s, const char *prefix) {
+static bool prefix_matches(const char *s, const char *prefix)
+{
 
 	if (strncmp(s, prefix, PREFIX_LENGTH) == 0)
 		return true;
@@ -47,7 +48,8 @@ static bool prefix_matches(const char *s, const char *prefix) {
  * @return  0   if success
  *         -1   if the value is out of range
  ******************************************************************************/
-static int8_t interpret_decimal(const char *s, struct data *d) {
+static int8_t interpret_decimal(const char *s, struct data *d)
+{
 
 	int i;
 
@@ -73,7 +75,8 @@ static int8_t interpret_decimal(const char *s, struct data *d) {
  * @return  0   if success
  *         -1   if the value is out of range
  ******************************************************************************/
-static int8_t interpret_hex(const char *s, struct data *d) {
+static int8_t interpret_hex(const char *s, struct data *d)
+{
 
 	int i;
 
@@ -99,7 +102,8 @@ static int8_t interpret_hex(const char *s, struct data *d) {
  * @return  0   if success
  *         -1   if the value is out of range
  ******************************************************************************/
-static int8_t interpret_binary(const char *s, struct data *d) {
+static int8_t interpret_binary(const char *s, struct data *d)
+{
 
 	uint8_t value = 0;
 
@@ -130,7 +134,8 @@ static int8_t interpret_binary(const char *s, struct data *d) {
  *
  * @return  none
  ******************************************************************************/
-static void print_result(struct data *d) {
+static void print_result(struct data *d)
+{
 
 	char *ascii = d->ascii;
 	char *dec   = d->dec;
@@ -152,7 +157,8 @@ static void print_result(struct data *d) {
  * @return  '1' if the bit in the byte was set, otherwise
  *          '0' if the bit was not set
  ******************************************************************************/
-static char get_bit(char byte, uint8_t bit) {
+static char get_bit(char byte, uint8_t bit)
+{
 	return (byte & (1 << bit) ? '1' : '0');
 }
 
@@ -163,16 +169,17 @@ static char get_bit(char byte, uint8_t bit) {
  *
  * @return  none
  ******************************************************************************/
-static void format_result(struct data *d) {
+static void format_result(struct data *d)
+{
 
 	uint8_t value = d->value;
 
 	sprintf(d->dec, "0d%d", value);   // decimal
 	sprintf(d->hex, "0x%02X", value); // hex
 	sprintf(d->binary, "%c%c%c%c %c%c%c%c", get_bit(value, 7),
-		get_bit(value, 6), get_bit(value, 5), get_bit(value, 4),
-		get_bit(value, 3), get_bit(value, 2), get_bit(value, 1),
-		get_bit(value, 0));
+	        get_bit(value, 6), get_bit(value, 5), get_bit(value, 4),
+	        get_bit(value, 3), get_bit(value, 2), get_bit(value, 1),
+	        get_bit(value, 0));
 
 	sprintf(d->ascii, "%s", value < 128 ? ascii_table[value] : "undefined");
 }
@@ -185,7 +192,8 @@ static void format_result(struct data *d) {
  *
  * @return  none
  ******************************************************************************/
-void convert(const char *s) {
+void convert(const char *s)
+{
 
 	struct data d;
 

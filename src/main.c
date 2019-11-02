@@ -13,7 +13,8 @@
  *
  * @return  none
  ******************************************************************************/
-static void remove_newline(char *s) {
+static void remove_newline(char *s)
+{
 
 	char *c = strchr(s, '\n');
 
@@ -29,7 +30,8 @@ static void remove_newline(char *s) {
  *
  * @return  none
  ******************************************************************************/
-static void clear_buffer() {
+static void clear_buffer()
+{
 	char c;
 	while ((c = getchar()) != '\n' && c != EOF)
 		;
@@ -42,7 +44,8 @@ static void clear_buffer() {
  *
  * @return  0 if the program is finished
  ******************************************************************************/
-int main() {
+int main()
+{
 
 	printf("########################################################\n");
 	printf("# Converter tool made by Dante999                      #\n");
