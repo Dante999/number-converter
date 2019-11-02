@@ -1,0 +1,19 @@
+---
+BasedOnStyle: LLVM
+
+IndentWidth: 8
+UseTab: Always
+
+#BreakBeforeBraces: Linux
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterEnum: false
+  AfterStruct: false
+  SplitEmptyFunction: false
+
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+
+
+# custom
+AlignConsecutiveAssignments: true
