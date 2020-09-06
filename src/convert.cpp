@@ -1,5 +1,5 @@
-#include "convert.h"
-#include "ascii_table.h"
+#include "convert.hpp"
+#include "ascii_table.hpp"
 #include <stdbool.h>
 #include <stdio.h> // sscanf()
 #include <string.h>
