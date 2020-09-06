@@ -61,7 +61,7 @@ static int8_t interpret_decimal(const char *s, struct data *d)
 		       s);
 		return -1;
 	} else {
-		d->value = (uint8_t)i;
+		d->value = static_cast<uint8_t>(i);
 		return 0;
 	}
 }
@@ -78,17 +78,17 @@ static int8_t interpret_decimal(const char *s, struct data *d)
 static int8_t interpret_hex(const char *s, struct data *d)
 {
 
-	int i;
+	unsigned int i;
 
 	sscanf(s, "%X", &i);
 
-	if (i < 0 || 255 < i) {
+	if (i > 255) {
 		d->value = 0;
 		printf("Error: Hex number negative or greater than 255: %s\n",
 		       s);
 		return -1;
 	} else {
-		d->value = (uint8_t)i;
+		d->value = static_cast<uint8_t>(i);
 		return 0;
 	}
 }
@@ -107,11 +107,11 @@ static int8_t interpret_binary(const char *s, struct data *d)
 
 	uint8_t value = 0;
 
-	uint8_t actual_length   = strlen(s);
+	size_t actual_length   = strlen(s);
 	uint8_t expected_length = 8;
 
 	if (actual_length != expected_length) {
-		printf("Error: Binary format has length %i instead of %i!\n",
+		printf("Error: Binary format has length %li instead of %i!\n",
 		       actual_length, expected_length);
 		return -1;
 	}
@@ -119,7 +119,7 @@ static int8_t interpret_binary(const char *s, struct data *d)
 	for (uint8_t i = 0; i < expected_length; i++) {
 
 		if (s[i] == '1')
-			value |= (1 << (7 - i));
+			value |= static_cast<uint8_t>((1 << (7 - i)));
 	}
 
 	d->value = value;
@@ -157,7 +157,7 @@ static void print_result(struct data *d)
  * @return  '1' if the bit in the byte was set, otherwise
  *          '0' if the bit was not set
  ******************************************************************************/
-static char get_bit(char byte, uint8_t bit)
+static char get_bit(uint8_t byte, uint8_t bit)
 {
 	return (byte & (1 << bit) ? '1' : '0');
 }
