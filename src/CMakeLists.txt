@@ -11,6 +11,10 @@ include(cmake/compiler-warnings.cmake)
 set_project_warnings(project_warnings)
 
 
-add_executable(nconv convert.cpp main.cpp)
+add_executable(nconv
+    convert.cpp
+    main.cpp
+)
+
 target_link_libraries(nconv PRIVATE project_warnings)
 

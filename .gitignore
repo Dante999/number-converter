@@ -1,0 +1,18 @@
+# QT Creator files
+/*.cflags
+/*.config
+/*.creator
+/*.cxxflags
+/*.files
+/*.includes
+/*.creator.user
+
+*.autosave
+
+# vim swapfile
+*.swp
+
+# compiled files
+*.o
+
+build

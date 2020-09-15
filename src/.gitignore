@@ -1,7 +1,0 @@
-# vim swapfile
-*.swp
-
-# compiled files
-*.o
-
-build
