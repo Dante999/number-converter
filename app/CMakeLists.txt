@@ -11,15 +11,13 @@
 #set_project_warnings(project_warnings)
 
 
-
-add_library(nconv_lib
-    convert.cpp
+add_executable(nconv
+    main.cpp
 )
 
-target_include_directories(nconv_lib PUBLIC ../include)
-
-target_link_libraries(nconv_lib 
+target_link_libraries(nconv 
     PRIVATE project_options 
             project_warnings
+            nconv_lib
 )
 
