@@ -14,6 +14,13 @@ target_compile_features(project_options INTERFACE cxx_std_17)
 add_library(project_warnings INTERFACE)
 include(cmake/compiler-warnings.cmake)
 set_project_warnings(project_warnings)
+include(cmake/standard-project-settings.cmake)
+
+
+include(cmake/conan.cmake)
+run_conan()
+
 
 add_subdirectory(src)
 add_subdirectory(app)
+add_subdirectory(test)
