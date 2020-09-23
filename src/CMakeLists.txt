@@ -14,6 +14,8 @@
 
 add_library(nconv_lib
     convert.cpp
+    number.cpp
+    converter.cpp
 )
 
 target_include_directories(nconv_lib PUBLIC ../include)

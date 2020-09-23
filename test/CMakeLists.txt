@@ -1,5 +1,5 @@
 add_executable(unit-tests
-    main_test.cpp
+    converter_test.cpp
 )
 
 

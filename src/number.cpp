@@ -1,35 +1,38 @@
 #include "number.hpp"
 
-Number::Number() {}
+#include <iostream>
+
+#include "converter.hpp"
+
+Number::Number(void) : m_value(0xFF)
+{
+	// nothing else to do
+}
 
 void Number::parse(const std::string &input)
 {
-	std::string prefix = input.substr(0, 2);
+	m_value = Converter::parse(input);
+	Converter::to_decimal(m_decimal, m_value);
+	Converter::to_hex(m_hex, m_value);
+	Converter::to_binary(m_binary, m_value);
 }
 
-void Number::to_hex(uint8_t value) {}
-
-void Number::to_ascii(uint8_t value) {}
-
-void Number::to_decimal(uint8_t value) {}
-
-void Number::from_hex(const std::string &value) {}
-
-void Number::from_ascii(const std::string &value) {}
-
-void Number::from_decimal(const std::string &value) {}
-
-const std::string_view Number::get_hex() const
+const std::string Number::get_hex() const
 {
 	return m_hex;
 }
 
-const std::string_view Number::get_decimal() const
+const std::string Number::get_decimal() const
 {
 	return m_decimal;
 }
 
-const std::string_view Number::get_ascii() const
+const std::string Number::get_ascii() const
 {
 	return m_ascii;
+}
+
+const std::string Number::get_binary() const
+{
+	return m_binary;
 }
