@@ -1,3 +1,7 @@
+`master -->` [![Build Status](https://travis-ci.org/Dante999/number-converter.svg?branch=master)](https://travis-ci.org/Dante999/number-converter)  
+
+`dev ----->` [![Build Status](https://travis-ci.org/Dante999/number-converter.svg?branch=dev)](https://travis-ci.org/Dante999/number-converter)
+
 # Number Converter
 This is a really simple command line tool for converting numbers in different
 representations.
