@@ -1,17 +1,27 @@
 language: cpp
 compiler: gcc
 
+
 install:
-    - make
-    - cmake
-     # Pip cannot install Conan without these upgrades
-    - python3 -m pip install --upgrade pip setuptools
-    # Install Conan and CMake >= 3.15
-    - python3 -m pip install conan cmake
+  - pip3 install conan
 
   # Fail if we can't run Conan.
-    - conan --version
+  - conan --version
 
+
+
+jobs:
+    include:
+        - os: linux
+          dist: focal
+          compiler: gcc
+
+          addons:
+              apt:
+                  packages:
+                      - python3
+                      - python3-pip
+        
 
 script:
     - mkdir build
