@@ -11,8 +11,8 @@ typedef struct {
 
 const std::array test_data = {
     //  | hex  |   binary    | decimal | value |
-    data{"0xFF", "0b11111111", "0d255", 255},
-    data{"0x00", "0b00000000", "0d0", 0},
+    data{"0xFF", "0b11111111", "0d255", 255}, //
+    data{"0x00", "0b00000000", "0d0", 0},     //
     data{"0xEF", "0b11101111", "0d239", 239}, //
     data{"0x00", "0b00000000", "0d0", 0},     //
     data{"0x01", "0b00000001", "0d1", 1},     //
@@ -32,6 +32,34 @@ TEST(Converter, to_hex)
 		std::string val_actual;
 
 		Converter::to_hex(val_actual, v.m_val);
+
+		EXPECT_EQ(val_expected, val_actual);
+	}
+}
+
+TEST(Converter, to_decimal)
+{
+	for (const auto &v : test_data) {
+
+		const std::string val_expected = v.m_dec;
+
+		std::string val_actual;
+
+		Converter::to_decimal(val_actual, v.m_val);
+
+		EXPECT_EQ(val_expected, val_actual);
+	}
+}
+
+TEST(Converter, to_binary)
+{
+	for (const auto &v : test_data) {
+
+		const std::string val_expected = v.m_bin;
+
+		std::string val_actual;
+
+		Converter::to_binary(val_actual, v.m_val);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
