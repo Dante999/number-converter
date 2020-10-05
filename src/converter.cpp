@@ -19,8 +19,13 @@ uint8_t Converter::parse(const std::string &input)
 	std::string value  = input.substr(2);
 
 	if (prefix == PREFIX_DECIMAL) {
-		int number = std::atoi(value.c_str());
-		(void)number;
+		return Converter::from_decimal(value);
+	}
+	else if (prefix == PREFIX_HEX) {
+		return Converter::from_hex(value);
+	}
+	else if (prefix == PREFIX_BINARY) {
+		return Converter::from_binary(value);
 	}
 
 	return 0;
@@ -52,8 +57,16 @@ void Converter::to_binary(std::string &result, uint8_t value)
 
 uint8_t Converter::from_hex(const std::string &value)
 {
-	(void)value;
-	return 0;
+	unsigned int i;
+
+	sscanf(value.c_str(), "%X", &i);
+
+	if (255 < i) {
+		throw "number negative or greater than 255";
+	}
+	else {
+		return static_cast<uint8_t>(i);
+	}
 }
 
 uint8_t Converter::from_decimal(const std::string &value)
@@ -72,6 +85,19 @@ uint8_t Converter::from_decimal(const std::string &value)
 
 uint8_t Converter::from_binary(const std::string &value)
 {
-	(void)value;
-	return 0;
+	constexpr uint8_t expected_length = 8;
+
+	uint8_t retval = 0;
+
+	if (value.length() != expected_length) {
+		throw "value has not the expected length of 8";
+	}
+
+	for (uint8_t i = 0; i < expected_length; i++) {
+
+		if (value.at(i) == '1')
+			retval |= static_cast<uint8_t>((1 << (7 - i)));
+	}
+
+	return retval;
 }

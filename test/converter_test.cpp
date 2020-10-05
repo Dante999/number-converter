@@ -64,3 +64,36 @@ TEST(Converter, to_binary)
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
+
+TEST(Converter, from_hex)
+{
+	for (const auto &v : test_data) {
+		const uint8_t val_expected = v.m_val;
+
+		uint8_t val_actual = Converter::parse(v.m_hex);
+
+		EXPECT_EQ(val_expected, val_actual);
+	}
+}
+
+TEST(Converter, from_binary)
+{
+	for (const auto &v : test_data) {
+		const uint8_t val_expected = v.m_val;
+
+		uint8_t val_actual = Converter::parse(v.m_bin);
+
+		EXPECT_EQ(val_expected, val_actual);
+	}
+}
+
+TEST(Converter, from_dec)
+{
+	for (const auto &v : test_data) {
+		const uint8_t val_expected = v.m_val;
+
+		uint8_t val_actual = Converter::parse(v.m_dec);
+
+		EXPECT_EQ(val_expected, val_actual);
+	}
+}
