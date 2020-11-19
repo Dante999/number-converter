@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "ascii_table.hpp"
-#include "converter.hpp"
+#include "number_converter.hpp"
 
 typedef struct {
 	std::string m_ascii;
@@ -25,7 +25,7 @@ const std::array test_data = {
     data{ASCII_UNDEFINED, "0xF0", "0b11110000", "0d240", 240}  //
 };
 
-TEST(Converter, to_hex)
+TEST(NumberConverter, to_hex)
 {
 	for (const auto &v : test_data) {
 
@@ -33,13 +33,13 @@ TEST(Converter, to_hex)
 
 		std::string val_actual;
 
-		Converter::to_hex(val_actual, v.m_val);
+		NumberConverter::to_hex(val_actual, v.m_val);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, to_decimal)
+TEST(NumberConverter, to_decimal)
 {
 	for (const auto &v : test_data) {
 
@@ -47,13 +47,13 @@ TEST(Converter, to_decimal)
 
 		std::string val_actual;
 
-		Converter::to_decimal(val_actual, v.m_val);
+		NumberConverter::to_decimal(val_actual, v.m_val);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, to_binary)
+TEST(NumberConverter, to_binary)
 {
 	for (const auto &v : test_data) {
 
@@ -61,13 +61,13 @@ TEST(Converter, to_binary)
 
 		std::string val_actual;
 
-		Converter::to_binary(val_actual, v.m_val);
+		NumberConverter::to_binary(val_actual, v.m_val);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, to_ascii)
+TEST(NumberConverter, to_ascii)
 {
 	for (const auto &v : test_data) {
 
@@ -75,46 +75,46 @@ TEST(Converter, to_ascii)
 
 		std::string val_actual;
 
-		Converter::to_ascii(val_actual, v.m_val);
+		NumberConverter::to_ascii(val_actual, v.m_val);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, from_hex)
+TEST(NumberConverter, from_hex)
 {
 	for (const auto &v : test_data) {
 		const uint8_t val_expected = v.m_val;
 
-		uint8_t val_actual = Converter::parse(v.m_hex);
+		uint8_t val_actual = NumberConverter::parse(v.m_hex);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, from_binary)
+TEST(NumberConverter, from_binary)
 {
 	for (const auto &v : test_data) {
 		const uint8_t val_expected = v.m_val;
 
-		uint8_t val_actual = Converter::parse(v.m_bin);
+		uint8_t val_actual = NumberConverter::parse(v.m_bin);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, from_dec)
+TEST(NumberConverter, from_dec)
 {
 	for (const auto &v : test_data) {
 		const uint8_t val_expected = v.m_val;
 
-		uint8_t val_actual = Converter::parse(v.m_dec);
+		uint8_t val_actual = NumberConverter::parse(v.m_dec);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, from_ascii)
+TEST(NumberConverter, from_ascii)
 {
 	typedef struct {
 		uint8_t     m_val;
@@ -130,16 +130,16 @@ TEST(Converter, from_ascii)
 	for (const auto &v : td) {
 		const uint8_t val_expected = v.m_val;
 
-		uint8_t val_actual = Converter::parse(v.m_ascii);
+		uint8_t val_actual = NumberConverter::parse(v.m_ascii);
 
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
 
-TEST(Converter, GIVEN_negativeNumber_WHEN_fromDec_THEN_exception)
+TEST(NumberConverter, GIVEN_negativeNumber_WHEN_fromDec_THEN_exception)
 {
 	try {
-		Converter::parse("0d256");
+		NumberConverter::parse("0d256");
 
 	} catch (const char *msg) {
 		return;

@@ -1,10 +1,10 @@
-#ifndef CONVERTER_HPP
-#define CONVERTER_HPP
+#ifndef NUMBER_CONVERTER_HPP
+#define NUMBER_CONVERTER_HPP
 
 #include <stdint.h>
 #include <string>
 
-class Converter {
+class NumberConverter {
 
       public:
 	static const int         PREFIX_LENGTH;
@@ -17,9 +17,9 @@ class Converter {
 	static uint8_t from_decimal(const std::string &value);
 	static uint8_t from_binary(const std::string &value);
 	static uint8_t from_ascii(const std::string &value);
-	
+
       public:
-	Converter() = delete;
+	NumberConverter() = delete;
 
 	static void to_hex(std::string &result, uint8_t value);
 	static void to_decimal(std::string &result, uint8_t value);

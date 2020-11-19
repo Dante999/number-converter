@@ -1,4 +1,4 @@
-#include "converter.hpp"
+#include "number_converter.hpp"
 
 #include <exception>
 
@@ -6,33 +6,33 @@
 
 constexpr size_t TMP_SIZE = 20;
 
-const int         Converter::PREFIX_LENGTH  = 2;
-const std::string Converter::PREFIX_HEX     = "0x";
-const std::string Converter::PREFIX_BINARY  = "0b";
-const std::string Converter::PREFIX_DECIMAL = "0d";
+const int         NumberConverter::PREFIX_LENGTH  = 2;
+const std::string NumberConverter::PREFIX_HEX     = "0x";
+const std::string NumberConverter::PREFIX_BINARY  = "0b";
+const std::string NumberConverter::PREFIX_DECIMAL = "0d";
 
 constexpr char get_bit(uint8_t byte, uint8_t bit)
 {
 	return (byte & (1 << bit) ? '1' : '0');
 }
 
-uint8_t Converter::parse(const std::string &input)
+uint8_t NumberConverter::parse(const std::string &input)
 {
 	if (input.size() == 1) {
-		return Converter::from_ascii(input);
+		return NumberConverter::from_ascii(input);
 	}
 
 	const std::string prefix = input.substr(0, 2);
 	const std::string value  = input.substr(2);
 
 	if (prefix == PREFIX_DECIMAL) {
-		return Converter::from_decimal(value);
+		return NumberConverter::from_decimal(value);
 	}
 	else if (prefix == PREFIX_HEX) {
-		return Converter::from_hex(value);
+		return NumberConverter::from_hex(value);
 	}
 	else if (prefix == PREFIX_BINARY) {
-		return Converter::from_binary(value);
+		return NumberConverter::from_binary(value);
 	}
 	else {
 		throw "unkown prefix";
@@ -41,28 +41,28 @@ uint8_t Converter::parse(const std::string &input)
 	return 0;
 }
 
-void Converter::to_hex(std::string &result, uint8_t value)
+void NumberConverter::to_hex(std::string &result, uint8_t value)
 {
 	char tmp[TMP_SIZE];
 	sprintf(tmp, "0x%02X", value);
 	result = tmp;
 }
 
-void Converter::to_ascii(std::string &result, uint8_t value)
+void NumberConverter::to_ascii(std::string &result, uint8_t value)
 {
 	char tmp[TMP_SIZE];
 	sprintf(tmp, "%s", value < 128 ? ascii_table[value] : ASCII_UNDEFINED);
 	result = tmp;
 }
 
-void Converter::to_decimal(std::string &result, uint8_t value)
+void NumberConverter::to_decimal(std::string &result, uint8_t value)
 {
 	char tmp[TMP_SIZE];
 	sprintf(tmp, "0d%d", value); // decimal
 	result = tmp;
 }
 
-void Converter::to_binary(std::string &result, uint8_t value)
+void NumberConverter::to_binary(std::string &result, uint8_t value)
 {
 	char tmp[TMP_SIZE];
 	sprintf(tmp, "0b%c%c%c%c%c%c%c%c", get_bit(value, 7), get_bit(value, 6),
@@ -72,7 +72,7 @@ void Converter::to_binary(std::string &result, uint8_t value)
 	result = tmp;
 }
 
-uint8_t Converter::from_hex(const std::string &value)
+uint8_t NumberConverter::from_hex(const std::string &value)
 {
 	unsigned int i;
 
@@ -86,14 +86,14 @@ uint8_t Converter::from_hex(const std::string &value)
 	}
 }
 
-uint8_t Converter::from_ascii(const std::string &value)
+uint8_t NumberConverter::from_ascii(const std::string &value)
 {
 	char c = value.at(0);
 
 	return static_cast<uint8_t>(c);
 }
 
-uint8_t Converter::from_decimal(const std::string &value)
+uint8_t NumberConverter::from_decimal(const std::string &value)
 {
 	int i;
 
@@ -107,7 +107,7 @@ uint8_t Converter::from_decimal(const std::string &value)
 	}
 }
 
-uint8_t Converter::from_binary(const std::string &value)
+uint8_t NumberConverter::from_binary(const std::string &value)
 {
 	constexpr uint8_t expected_length = 8;
 
