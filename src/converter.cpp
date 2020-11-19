@@ -15,8 +15,12 @@ constexpr char get_bit(uint8_t byte, uint8_t bit)
 
 uint8_t Converter::parse(const std::string &input)
 {
-	std::string prefix = input.substr(0, 2);
-	std::string value  = input.substr(2);
+	if (input.size() == 1) {
+		return 0;
+	}
+
+	const std::string prefix = input.substr(0, 2);
+	const std::string value  = input.substr(2);
 
 	if (prefix == PREFIX_DECIMAL) {
 		return Converter::from_decimal(value);
@@ -26,6 +30,9 @@ uint8_t Converter::parse(const std::string &input)
 	}
 	else if (prefix == PREFIX_BINARY) {
 		return Converter::from_binary(value);
+	}
+	else {
+		throw "unkown prefix";
 	}
 
 	return 0;

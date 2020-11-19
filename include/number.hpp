@@ -25,10 +25,10 @@ class Number {
 
 	void parse(const std::string &input);
 
-	const std::string get_hex(void) const;
-	const std::string get_decimal(void) const;
-	const std::string get_ascii(void) const;
-	const std::string get_binary(void) const;
+	const std::string& get_hex(void) const;
+	const std::string& get_decimal(void) const;
+	const std::string& get_ascii(void) const;
+	const std::string& get_binary(void) const;
 };
 
 #endif // NUMBER_HPP_INCLUDED

@@ -17,22 +17,22 @@ void Number::parse(const std::string &input)
 	Converter::to_binary(m_binary, m_value);
 }
 
-const std::string Number::get_hex() const
+const std::string& Number::get_hex() const
 {
 	return m_hex;
 }
 
-const std::string Number::get_decimal() const
+const std::string& Number::get_decimal() const
 {
 	return m_decimal;
 }
 
-const std::string Number::get_ascii() const
+const std::string& Number::get_ascii() const
 {
 	return m_ascii;
 }
 
-const std::string Number::get_binary() const
+const std::string& Number::get_binary() const
 {
 	return m_binary;
 }

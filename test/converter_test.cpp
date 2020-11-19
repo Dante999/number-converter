@@ -97,3 +97,13 @@ TEST(Converter, from_dec)
 		EXPECT_EQ(val_expected, val_actual);
 	}
 }
+
+TEST(Converter, GIVEN_negativeNumber_WHEN_fromDec_THEN_exception)
+{
+	try {
+		Converter::parse("0d256");
+
+	} catch (const char *msg) {
+		return;
+	}
+}
