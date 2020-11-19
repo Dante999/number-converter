@@ -8,7 +8,7 @@
 /*.creator.user
 
 *.autosave
-
+*.vscode
 # vim swapfile
 *.swp
 
