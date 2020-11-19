@@ -15,6 +15,7 @@ void Number::parse(const std::string &input)
 	Converter::to_decimal(m_decimal, m_value);
 	Converter::to_hex(m_hex, m_value);
 	Converter::to_binary(m_binary, m_value);
+	Converter::to_ascii(m_ascii, m_value);
 }
 
 const std::string& Number::get_hex() const

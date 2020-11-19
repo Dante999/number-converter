@@ -13,7 +13,6 @@
 
 
 add_library(nconv_lib
-    convert.cpp
     converter.cpp
     number.cpp
     number_printer.cpp

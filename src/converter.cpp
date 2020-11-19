@@ -1,5 +1,8 @@
 #include "converter.hpp"
+
 #include <exception>
+
+#include "ascii_table.hpp"
 
 constexpr size_t TMP_SIZE = 20;
 
@@ -16,7 +19,7 @@ constexpr char get_bit(uint8_t byte, uint8_t bit)
 uint8_t Converter::parse(const std::string &input)
 {
 	if (input.size() == 1) {
-		return 0;
+		return Converter::from_ascii(input);
 	}
 
 	const std::string prefix = input.substr(0, 2);
@@ -42,6 +45,13 @@ void Converter::to_hex(std::string &result, uint8_t value)
 {
 	char tmp[TMP_SIZE];
 	sprintf(tmp, "0x%02X", value);
+	result = tmp;
+}
+
+void Converter::to_ascii(std::string &result, uint8_t value)
+{
+	char tmp[TMP_SIZE];
+	sprintf(tmp, "%s", value < 128 ? ascii_table[value] : ASCII_UNDEFINED);
 	result = tmp;
 }
 
@@ -74,6 +84,13 @@ uint8_t Converter::from_hex(const std::string &value)
 	else {
 		return static_cast<uint8_t>(i);
 	}
+}
+
+uint8_t Converter::from_ascii(const std::string &value)
+{
+	char c = value.at(0);
+
+	return static_cast<uint8_t>(c);
 }
 
 uint8_t Converter::from_decimal(const std::string &value)

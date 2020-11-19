@@ -1,7 +1,12 @@
 #ifndef ASCII_TABLE_H_INCLUDED
 #define ASCII_TABLE_H_INCLUDED
 
-static const char *ascii_table[] = {
+#include <array>
+
+// constexpr char *ASCII_UNDEFINED = "undefined";
+#define ASCII_UNDEFINED "undefined"
+
+static const std::array<const char *, 128> ascii_table = {
     "NUL",   //   0
     "SOH",   //   1
     "STX",   //   2

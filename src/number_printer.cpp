@@ -4,7 +4,7 @@
 
 void NumberPrinter::print(Number &number)
 {
-	const char *ascii = "";
+	const char *ascii = number.get_ascii().c_str();
 	const char *dec   = number.get_decimal().c_str();
 	const char *hex   = number.get_hex().c_str();
 	const char *bin   = number.get_binary().c_str();
